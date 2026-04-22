@@ -281,7 +281,7 @@ function renderBoxes() {
               <h2>${box.name}</h2>
               <span class="box-price">${formatCoins(box.price)}</span>
             </div>
-            <span class="odds-pill">${percentFormatter.format(box.jackpotProbability)} odds</span>
+            <span class="odds-pill">Grand prize: ${formatCoins(box.jackpotValue)}</span>
           </div>
 
           <div class="box-art">
@@ -294,7 +294,7 @@ function renderBoxes() {
           </div>
 
           <ul class="prize-details">
-            <li><span>${box.jackpotPrizeName}</span><strong>${formatCoins(box.jackpotValue)}</strong></li>
+            <li><span>${box.jackpotPrizeName}</span><strong>${percentFormatter.format(box.jackpotProbability)} odds</strong></li>
           </ul>
 
           <button class="open-button" type="button" data-box-id="${box.id}" data-box-price="${box.price}" ${canAfford ? "" : "disabled"}>

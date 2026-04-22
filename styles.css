@@ -462,7 +462,7 @@ input::placeholder {
 }
 
 .odds-pill {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   padding: 5px 10px;
   border-radius: 100px;
   border: 1px solid rgba(240, 164, 26, 0.22);
@@ -471,6 +471,7 @@ input::placeholder {
   font-size: 0.73rem;
   font-weight: 700;
   letter-spacing: 0.06em;
+  text-align: right;
 }
 
 .box-art {
