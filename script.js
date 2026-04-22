@@ -70,15 +70,22 @@ function setPasswordMessage(message) {
 
 async function openMysteryBox(box, sourceButton) {
   const sourceCard = sourceButton.closest(".box-card");
-  const sourceRect = sourceCard.querySelector(".box-art").getBoundingClientRect();
-  sourceCard.classList.add("opening", "charging");
+  sourceCard.classList.add("charging");
   setButtonsBusy(true);
 
   try {
-    const data = await requestJson("/api/open-box", {
-      method: "POST",
-      body: JSON.stringify({ boxId: box.id })
-    });
+    // Run the API call and a minimum charge delay in parallel for drama
+    const [data] = await Promise.all([
+      requestJson("/api/open-box", {
+        method: "POST",
+        body: JSON.stringify({ boxId: box.id })
+      }),
+      new Promise(resolve => setTimeout(resolve, 420))
+    ]);
+
+    // Recompute rect right before the explosion so scroll position is current
+    const sourceRect = sourceCard.querySelector(".box-art").getBoundingClientRect();
+    sourceCard.classList.add("opening");
 
     state.user = data.user;
     state.coins = data.user.coins;
@@ -102,7 +109,7 @@ async function openMysteryBox(box, sourceButton) {
       status: "blocked"
     });
   } finally {
-    setTimeout(() => sourceCard.classList.remove("opening", "charging"), 900);
+    setTimeout(() => sourceCard.classList.remove("opening", "charging"), 950);
     setButtonsBusy(false);
   }
 }
@@ -172,10 +179,21 @@ function animatePrizeReveal(sourceRect, play) {
 }
 
 function createBoxExplosion(sourceRect, isJackpot) {
+  const cx = sourceRect.left + sourceRect.width / 2;
+  const cy = sourceRect.top + sourceRect.height / 2;
+
+  // Full-screen radial flash centred on the explosion origin
+  const flash = document.createElement("div");
+  flash.className = `screen-flash ${isJackpot ? "jackpot" : ""}`;
+  flash.style.setProperty("--fx", `${((cx / window.innerWidth) * 100).toFixed(1)}%`);
+  flash.style.setProperty("--fy", `${((cy / window.innerHeight) * 100).toFixed(1)}%`);
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 650);
+
   const burst = document.createElement("div");
   burst.className = `box-explosion ${isJackpot ? "jackpot" : ""}`;
-  burst.style.left = `${sourceRect.left + sourceRect.width / 2}px`;
-  burst.style.top = `${sourceRect.top + sourceRect.height / 2}px`;
+  burst.style.left = `${cx}px`;
+  burst.style.top = `${cy}px`;
 
   burst.innerHTML = `
     <span class="boom-light"></span>
@@ -185,9 +203,32 @@ function createBoxExplosion(sourceRect, isJackpot) {
     <span class="lid-shard shard-front"></span>
   `;
 
+  // Staggered extra rings for depth
+  const extraRings = isJackpot ? 3 : 2;
+  for (let i = 0; i < extraRings; i++) {
+    const ring = document.createElement("span");
+    ring.className = "boom-ring";
+    ring.style.animationDelay = `${(i + 1) * 130}ms`;
+    burst.appendChild(ring);
+  }
+
+  // Light rays shooting outward from the centre
+  const rayCount = isJackpot ? 14 : 10;
+  const rayLen = isJackpot ? "230px" : "170px";
+  for (let i = 0; i < rayCount; i++) {
+    const ray = document.createElement("span");
+    ray.className = "burst-ray";
+    const baseAngle = (360 / rayCount) * i;
+    const jitter = (Math.random() - 0.5) * (360 / rayCount * 0.45);
+    ray.style.setProperty("--angle", `${baseAngle + jitter}deg`);
+    ray.style.setProperty("--delay", `${45 + Math.random() * 85}ms`);
+    ray.style.setProperty("--len", rayLen);
+    burst.appendChild(ray);
+  }
+
   const colors = isJackpot
     ? ["#f4c542", "#ffe89a", "#d8a51f", "#fff7d7"]
-    : ["#27764f", "#2d6ccf", "#d8a51f", "#f7cd4d", "#ffffff"];
+    : ["#7c5cfc", "#3d7cff", "#f0a41a", "#ffc147", "#ffffff"];
   const confettiCount = isJackpot ? 96 : 54;
   const starCount = isJackpot ? 22 : 8;
 
@@ -216,7 +257,7 @@ function createBoxExplosion(sourceRect, isJackpot) {
   }
 
   document.body.appendChild(burst);
-  setTimeout(() => burst.remove(), isJackpot ? 2100 : 1700);
+  setTimeout(() => burst.remove(), isJackpot ? 2200 : 1800);
 }
 
 function getPrizeInitials(name) {

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
     <title>Mystery Box</title>
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -35,93 +36,94 @@
       </section>
 
       <div id="game-panel" class="is-hidden">
-      <section class="top-panel" aria-labelledby="game-title">
-        <div>
-          <p class="eyebrow">Pick a box. Chase the grand prize.</p>
-          <h1 id="game-title">Mystery Box</h1>
-          <p class="intro">
-            Spend coins to open a box. Most prizes are near or below the box price.
-            Every box also has a rare grand prize worth 100 times its cost.
-          </p>
-        </div>
-
-        <div class="wallet" aria-live="polite">
-          <span id="player-name" class="player-name"></span>
-          <span class="wallet-label">Coins</span>
-          <strong id="coin-balance">0</strong>
-          <div class="wallet-actions">
-            <button id="profile-button" class="secondary-button" type="button">Profile</button>
-            <button id="reset-button" class="secondary-button" type="button">Reset</button>
-            <button id="logout-button" class="text-button" type="button">Log out</button>
-          </div>
-        </div>
-      </section>
-
-      <div id="play-view">
-      <section class="boxes-section" aria-label="Mystery boxes">
-        <div id="box-list" class="box-list"></div>
-      </section>
-
-      <section class="result-area" aria-live="polite">
-        <div id="result-card" class="result-card">
-          <span class="result-label">Ready</span>
-          <h2>Choose a mystery box</h2>
-          <p>Your prize will appear here after you purchase and open a box.</p>
-        </div>
-
-        <div class="history-panel">
-          <div class="history-header">
-            <h2>Recent Opens</h2>
-            <button id="clear-history-button" class="text-button" type="button">Clear</button>
-          </div>
-          <ol id="history-list" class="history-list"></ol>
-        </div>
-      </section>
-      </div>
-
-      <section id="profile-view" class="profile-view is-hidden" aria-labelledby="profile-title">
-        <div class="profile-header">
+        <section class="top-panel" aria-labelledby="game-title">
           <div>
-            <p class="eyebrow">Player profile</p>
-            <h1 id="profile-title">Account</h1>
-            <p class="intro">Manage your password, top up coins, and review your saved activity.</p>
+            <p class="eyebrow">Pick a box. Chase the grand prize.</p>
+            <h1 id="game-title">Mystery Box</h1>
           </div>
-          <button id="back-to-game-button" class="secondary-button compact-button" type="button">Back to game</button>
+
+          <div class="wallet" aria-live="polite">
+            <div class="wallet-info">
+              <span id="player-name" class="player-name"></span>
+              <div class="coin-display">
+                <strong id="coin-balance">0</strong>
+                <span class="wallet-label">coins</span>
+              </div>
+            </div>
+            <div class="wallet-divider" aria-hidden="true"></div>
+            <div class="wallet-actions">
+              <button id="profile-button" class="secondary-button" type="button">Profile</button>
+              <button id="reset-button" class="secondary-button" type="button">Reset</button>
+              <button id="logout-button" class="text-button" type="button">Log out</button>
+            </div>
+          </div>
+        </section>
+
+        <div id="play-view">
+          <section class="boxes-section" aria-label="Mystery boxes">
+            <div id="box-list" class="box-list"></div>
+          </section>
+
+          <section class="result-area" aria-live="polite">
+            <div id="result-card" class="result-card">
+              <span class="result-label">Ready</span>
+              <h2>Choose a mystery box</h2>
+              <p>Your prize will appear here after you purchase and open a box.</p>
+            </div>
+
+            <div class="history-panel">
+              <div class="history-header">
+                <h2>Recent Opens</h2>
+                <button id="clear-history-button" class="text-button" type="button">Clear</button>
+              </div>
+              <ol id="history-list" class="history-list"></ol>
+            </div>
+          </section>
         </div>
 
-        <div class="profile-grid">
-          <section class="profile-panel" aria-labelledby="profile-summary-title">
-            <h2 id="profile-summary-title">Summary</h2>
-            <p id="profile-summary" class="profile-summary"></p>
-          </section>
+        <section id="profile-view" class="profile-view is-hidden" aria-labelledby="profile-title">
+          <div class="profile-header">
+            <div>
+              <p class="eyebrow">Player profile</p>
+              <h1 id="profile-title">Account</h1>
+              <p class="intro">Manage your password, top up coins, and review your saved activity.</p>
+            </div>
+            <button id="back-to-game-button" class="secondary-button compact-button" type="button">Back to game</button>
+          </div>
 
-          <section class="profile-panel" aria-labelledby="top-up-title">
-            <h2 id="top-up-title">Top Up Coins</h2>
-            <p>Add coins to your balance. Each top-up is saved in your profile history.</p>
-            <div id="top-up-list" class="top-up-list"></div>
-            <p id="top-up-message" class="form-message" role="alert"></p>
-          </section>
+          <div class="profile-grid">
+            <section class="profile-panel" aria-labelledby="profile-summary-title">
+              <h2 id="profile-summary-title">Summary</h2>
+              <p id="profile-summary" class="profile-summary"></p>
+            </section>
 
-          <form id="password-form" class="profile-panel" aria-labelledby="password-title">
-            <h2 id="password-title">Reset Password</h2>
-            <label>
-              Current password
-              <input name="currentPassword" type="password" autocomplete="current-password" required>
-            </label>
-            <label>
-              New password
-              <input name="newPassword" type="password" autocomplete="new-password" minlength="6" required>
-            </label>
-            <button class="open-button" type="submit">Update password</button>
-            <p id="password-message" class="form-message" role="alert"></p>
-          </form>
+            <section class="profile-panel" aria-labelledby="top-up-title">
+              <h2 id="top-up-title">Top Up Coins</h2>
+              <p>Add coins to your balance. Each top-up is saved in your profile history.</p>
+              <div id="top-up-list" class="top-up-list"></div>
+              <p id="top-up-message" class="form-message" role="alert"></p>
+            </section>
 
-          <section class="profile-panel history-wide" aria-labelledby="profile-history-title">
-            <h2 id="profile-history-title">Purchase History</h2>
-            <ol id="profile-history-list" class="profile-history-list"></ol>
-          </section>
-        </div>
-      </section>
+            <form id="password-form" class="profile-panel" aria-labelledby="password-title">
+              <h2 id="password-title">Reset Password</h2>
+              <label>
+                Current password
+                <input name="currentPassword" type="password" autocomplete="current-password" required>
+              </label>
+              <label>
+                New password
+                <input name="newPassword" type="password" autocomplete="new-password" minlength="6" required>
+              </label>
+              <button class="open-button" type="submit">Update password</button>
+              <p id="password-message" class="form-message" role="alert"></p>
+            </form>
+
+            <section class="profile-panel history-wide" aria-labelledby="profile-history-title">
+              <h2 id="profile-history-title">Purchase History</h2>
+              <ol id="profile-history-list" class="profile-history-list"></ol>
+            </section>
+          </div>
+        </section>
       </div>
     </main>
 
